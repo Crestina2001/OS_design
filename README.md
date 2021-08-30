@@ -16,7 +16,7 @@
 
 195XXXX 徐道晟：组员，负责？？？。
 
-195XXXX 余世璇：组员，负责？？？。
+1951015 余世璇：组员，负责编写用户级应用日历和小游戏2048。
 
 ### 1.1 项目框架
 
@@ -291,6 +291,18 @@ if(strcmp(rdbuf, "hello") == 0){}
 ## 3. 用户级应用
 
 ### 3.1 帮助界面
-
-
+### 3.2 日历
+本项目实现了日历功能，通过输入年份以及月份，可以输出该月的日历，并对不符的输入进行检测与提示。
+显示某月日历：
+![ok](https://user-images.githubusercontent.com/85339334/131300019-e547ec75-5dea-4e08-8726-24bd4aa41643.png)
+检测年份是否有误：
+![wrong year](https://user-images.githubusercontent.com/85339334/131299917-f63d2f71-f0e8-44b5-b1c0-d58a4640148f.png)
+检测月份是否有误
+![wrong month](https://user-images.githubusercontent.com/85339334/131300104-20df58d6-72fd-4cc6-9d9a-3200bb783c6d.png)
+### 3.3 2048
+本项目实现了经典的2048小游戏，通过 wsad 进行上下左右移动的操作，并给出实时分数，并可通过 q 退出（quit）。
+初始化：
+![2048](https://user-images.githubusercontent.com/85339334/131300785-c485f835-c4ab-4f61-b2d7-b4cdee2d7903.png)
+通过不断操作，分数不断上升，当游戏无法再进行下去时，或者要主动退出，按q可退出游戏
+![exit](https://user-images.githubusercontent.com/85339334/131301079-489341df-d898-4faf-9c38-45096a16af02.png)
 
