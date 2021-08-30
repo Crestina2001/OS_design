@@ -2624,7 +2624,6 @@ void runCalculator(int fd_stdin){
 		if(valbuf2[0]==45)b=-(valbuf2[1]-48);
 		else b=valbuf2[0]-48;
 	    }
-	    printf("%d %d\n",a,b);
 	    switch(control)
 	    {
 	    case '+' :
