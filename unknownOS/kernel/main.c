@@ -2611,6 +2611,7 @@ void runCalculator(int fd_stdin){
 		control = rdbuf[0];
 	    if (control == 'Q' || control == 'q')
 		{
+			printf("You have quited the calculator.\n Input 'menu' to return...\n");
 			break;
 		}
 	    else{
