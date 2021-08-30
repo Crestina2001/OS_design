@@ -298,8 +298,6 @@ if(strcmp(rdbuf, "hello") == 0){}
 本项目实现了日历功能，通过输入年份以及月份，可以输出该月的日历，并对不符的输入进行检测与提示。
 显示某月日历：![](..\unknownOS\assets\cal_init.png)
 
-
-
 检测年份是否有误：![](..\unknownOS\assets\cal_wrong year.png)
 
 检测月份是否有误:![](..\unknownOS\assets\cal_wrong month.png)
