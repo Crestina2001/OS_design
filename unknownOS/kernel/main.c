@@ -2601,6 +2601,7 @@ void runCalculator(int fd_stdin){
 	    char valbuf2[128];
 	    char control;     //operator
 	    printf("Please choose operators from here : '+ - * /' \n");
+	    printf("Input 'Q' or 'q' to exit.\n");
 	    while(1)
 	    {
 	    for (int i = 0; i <= 127; i++)rdbuf[i] = '\0';
