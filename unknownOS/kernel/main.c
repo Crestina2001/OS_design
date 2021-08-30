@@ -2202,28 +2202,20 @@ void draw_map(int map[9][11])
 }
 void boxMenu()
 {
-
-	printf("      ================================================================\n");
-	printf("      #                                       Welcome to             #\n");
-	printf("      #     boxboxboxbo                      pushBoxGame             #\n");
-	printf("      #   boxboxboxboxbox                                            #\n");
-	printf("      #  box          box                   Instrcution              #\n");
-	printf("      #                 box              set: p:People b:BOX         #\n");
-	printf("      #                 box                   #:Wall   D:Destination #\n");
-	printf("      #                box               operation:                  #\n");
-	printf("      #               box                     s:Down d:Right         #\n");
-	printf("      #              box                      w:Up   a:Left  q:Quit  #\n");
-	printf("      #             box                                              #\n");
-	printf("      #            box                        Enter'q' to quit       #\n");
-	printf("      #           box                                                #\n");
-	printf("      #                                                              #\n");
-	printf("      #           box                                                #\n");
-	printf("      #            box                                               #\n");
-	printf("      #                                                              #\n");
-	printf("      #                                                              #\n");
-	printf("      #                   By hms, shenbo, xds, ysx, zby              #\n");
-	printf("      #                      ===  ======  ===  ===  ===              #\n");
-	printf("      ================================================================\n");
+	
+	        printf("      ================================================================\n");
+		printf("      #                                       Welcome to             #\n");
+		printf("      #     boxboxboxbo                      pushBoxGame             #\n");
+		printf("      #   boxboxboxboxbox                                            #\n");
+		printf("      #  box          boxbo                   Instrcution            #\n");
+		printf("      #                 box              set: p:People b:BOX         #\n");
+		printf("      #               box                     #:Wall   D:Destination #\n");
+		printf("      #             box                  operation:                  #\n");
+		printf("      #          box                          s:Down d:Right         #\n");
+		printf("      #                                       w:Up   a:Left  q:Quit  #\n");
+		printf("      #          box                                                 #\n");
+		printf("      #          box                          Enter'q' to quit       #\n");
+		printf("      ================================================================\n");
 
 	printf("\n\n");
 }
@@ -2239,10 +2231,10 @@ void Runpushbox(fd_stdin, fd_stdout)
 	int map[9][11] = {
 		{2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2},
 		{2, 1, 0, 0, 0, 1, 0, 0, 0, 1, 2},
-		{2, 1, 0, 4, 4, 4, 4, 4, 0, 1, 2},
-		{2, 1, 0, 4, 0, 4, 0, 4, 0, 0, 1},
-		{2, 1, 0, 0, 0, 6, 0, 0, 4, 0, 1},
-		{1, 1, 0, 1, 1, 1, 1, 0, 4, 0, 1},
+		{2, 1, 0, 4, 4, 4, 4, 4, 0, 1, 1},
+		{1, 0, 0, 4, 0, 4, 0, 4, 0, 0, 1},
+		{1, 0, 0, 0, 0, 6, 0, 0, 4, 0, 1},
+		{1, 0, 0, 1, 1, 1, 1, 0, 4, 0, 1},
 		{1, 0, 3, 3, 3, 3, 3, 1, 0, 0, 1},
 		{1, 0, 3, 3, 3, 3, 3, 0, 0, 0, 1},
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2},
