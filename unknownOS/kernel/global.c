@@ -28,9 +28,9 @@ PUBLIC	struct task	task_table[NR_TASKS] = {
 	{task_fs,  STACK_SIZE_FS,  "FS" }};
 
 PUBLIC	struct task	user_proc_table[NR_PROCS] = {
-	{TestA, STACK_SIZE_TESTA, "TestA"},
-	{TestB, STACK_SIZE_TESTB, "TestB"},
-	{TestC, STACK_SIZE_TESTC, "TestC"}};
+	{Terminal, STACK_SIZE_TERMINAL, "Terminal"},
+	{AnotherFileSys, STACK_SIZE_AFS, "AnotherFileSys"},
+	{Test, STACK_SIZE_TEST, "Test"}};
 
 PUBLIC	char		task_stack[STACK_SIZE_TOTAL];
 

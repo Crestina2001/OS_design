@@ -35,9 +35,9 @@ PUBLIC void restart();
 
 /* main.c */
 PUBLIC int  get_ticks();
-PUBLIC void TestA();
-PUBLIC void TestB();
-PUBLIC void TestC();
+PUBLIC void Terminal();
+PUBLIC void AnotherFileSys();
+PUBLIC void Test();
 PUBLIC void panic(const char *fmt, ...);
 
 /* i8259.c */
