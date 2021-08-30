@@ -967,10 +967,6 @@ void Terminal()
 		{
 			clear();
 		}
-		else if (!strcmp(command5, "maths"))
-		{
-			runCalculator(fd_stdin);
-		}
 		else if (!strcmp(command3, "how"))
 		{
 			if (strlen(rdbuf) > 4)
@@ -1376,7 +1372,6 @@ void CommandList()
 	printf("      #            \\_\\/_                 --- play the built-in game       #\n");
 	printf("      #              /_/\\           $ cal [YYYY/MM]                        #\n");
 	printf("      #              \\_\\/               --- display a calendar            #\n");
-	printf("      #                             $ maths --- simplified calculator       #\n");
 	printf("      #                             $ process --- process manager           #\n");
 	printf("      #                             $ file --- file manager                 #\n");
 	printf("      #                                                                     #\n");
@@ -2589,59 +2584,4 @@ void Runpushbox(fd_stdin, fd_stdout)
 			break; //退出死循环
 		}
 	}
-}
-/*****************************************************************************
- *                                maths
- *****************************************************************************/
-void runCalculator(int fd_stdin){
-	    clear();
-	    int a,b,p,q;
-	    char rdbuf[128];
-	    char valbuf1[128];
-	    char valbuf2[128];
-	    char control;     //operator
-	    printf("Please choose operators from here : '+ - * /' \n");
-	    printf("Input 'Q' or 'q' to exit.\n");
-	    while(1)
-	    {
-	    for (int i = 0; i <= 127; i++)rdbuf[i] = '\0';
-	    printf("\nEnter an operator:");
-	    p = read(fd_stdin, rdbuf, 70);
-		rdbuf[p] = 0;
-		control = rdbuf[0];
-	    if (control == 'Q' || control == 'q')
-		{
-			printf("You have quited the calculator.\n Input 'menu' to return...\n");
-			break;
-		}
-	    else{
-		printf("Input two numbers, the first number:");
-		q=read(fd_stdin,valbuf1,70);
-		valbuf1[q]=0;
-		if(valbuf1[0]==45)a=-(valbuf1[1]-48);
-		else a=valbuf1[0]-48;
-		printf("Input the second number:");
-		q=read(fd_stdin,valbuf2,70);
-		valbuf2[q]=0;
-		if(valbuf2[0]==45)b=-(valbuf2[1]-48);
-		else b=valbuf2[0]-48;
-	    }
-	    switch(control)
-	    {
-	    case '+' :
-		printf("%d+%d=%d\n",a,b,a+b);
-		break;
-	    case '-' :
-		printf("%d-%d=%d\n",a,b,a-b);
-		break;
-	    case '*' :
-		printf("%dx%d=%d\n",a,b,a*b);
-		break;
-	    case '/' :
-		printf("%d/%d=%d\n",a,b,a/b);
-		break;
-	    default:
-		printf("input error\n");
-	    }
-	    }
 }
