@@ -323,7 +323,18 @@ if(strcmp(rdbuf, "hello") == 0){}
 
 ![](..\unknownOS\assets\2048_exit.png)
 
-### 3.4 推箱子
+### 3.4 计算器
+本项目实现了整数计算器功能，先输入选择的加减乘除运算，再依次输入两个整数，即可完成运算。
+初始化：
+
+![](..\unknownOS\assets\calculator-init.jpg)
+
+输入Q或q可退出计算器
+
+![](..\unknownOS\assets\calculator-exit.jpg)
+
+
+### 3.5 推箱子
 本项目实现了经典的推箱子小游戏，通过 wsad 控制人物（P）上下左右移动的操作，并给出实时分数，每有一个箱子在目标区域（D）得一分，并可通过 q 退出（quit）。
 初始化：
 
