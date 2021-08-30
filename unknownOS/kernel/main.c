@@ -1005,6 +1005,11 @@ void Terminal()
 			}
 			continue;
 		}
+		// else if (!strcmp(rdbuf, "order"))
+		// {
+		// 	clear();
+		// 	runKFC(fd_stdin);
+		// }
 		else if (!strcmp(rdbuf, "process"))
 		{
 			clear();
@@ -1012,11 +1017,8 @@ void Terminal()
 		}
 		else if (!strcmp(rdbuf, "file"))
 		{
-
-			printf("to do: code file manager here.\n");
-
-			// clear();
-			// runFileManage(fd_stdin);
+			clear();
+			runFileManage(fd_stdin);
 		}
 		else if (!strcmp(rdbuf, ""))
 		{
@@ -1788,6 +1790,9 @@ void gameMain(char *option, int fd_stdin, int fd_stdout)
 	{
 		Runpushbox(fd_stdin, fd_stdout);
 	}
+	else if (!strcmp(option,"-KFC")){
+		runKFC(fd_stdin);
+	}
 	else
 	{
 		printf("Sorry, there no such option for game.\n");
@@ -1796,6 +1801,20 @@ void gameMain(char *option, int fd_stdin, int fd_stdout)
 
 	printf("\n");
 }
+
+/*======================================================================*
+							KFC
+ *======================================================================*/
+
+void runKFC(int fd_stdin)
+{
+	printf("KFC is under construction. Sorry.");
+}
+
+/*======================================================================*
+							2048
+ *======================================================================*/
+
 
 #define KEY_CODE_UP    0x41
 #define KEY_CODE_DOWN  0x42
@@ -2200,31 +2219,22 @@ void draw_map(int map[9][11])
 		printf("\n");
 	}
 }
+
 void boxMenu()
 {
-
 	printf("      ================================================================\n");
-	printf("      #                                       Welcome to             #\n");
-	printf("      #     boxboxboxbo                      pushBoxGame             #\n");
-	printf("      #   boxboxboxboxbox                                            #\n");
-	printf("      #  box          box                   Instrcution              #\n");
-	printf("      #                 box              set: p:People b:BOX         #\n");
-	printf("      #                 box                   #:Wall   D:Destination #\n");
-	printf("      #                box               operation:                  #\n");
-	printf("      #               box                     s:Down d:Right         #\n");
-	printf("      #              box                      w:Up   a:Left  q:Quit  #\n");
-	printf("      #             box                                              #\n");
-	printf("      #            box                        Enter'q' to quit       #\n");
-	printf("      #           box                                                #\n");
-	printf("      #                                                              #\n");
-	printf("      #           box                                                #\n");
-	printf("      #            box                                               #\n");
-	printf("      #                                                              #\n");
-	printf("      #                                                              #\n");
-	printf("      #                   By hms, shenbo, xds, ysx, zby              #\n");
-	printf("      #                      ===  ======  ===  ===  ===              #\n");
-	printf("      ================================================================\n");
-
+		printf("      #                                       Welcome to             #\n");
+		printf("      #     boxboxboxbo                      pushBoxGame             #\n");
+		printf("      #   boxboxboxboxbox                                            #\n");
+		printf("      #  box          boxbo                   Instrcution            #\n");
+		printf("      #                 box              set: p:People b:BOX         #\n");
+		printf("      #               box                     #:Wall   D:Destination #\n");
+		printf("      #             box                  operation:                  #\n");
+		printf("      #          box                          s:Down d:Right         #\n");
+		printf("      #                                       w:Up   a:Left  q:Quit  #\n");
+		printf("      #          box                                                 #\n");
+		printf("      #          box                          Enter'q' to quit       #\n");
+		printf("      ================================================================\n");
 	printf("\n\n");
 }
 
