@@ -2603,6 +2603,7 @@ void runCalculator(int fd_stdin){
 	    printf("Please choose operators from here : '+ - * /' \n");
 	    while(1)
 	    {
+	    for (int i = 0; i <= 127; i++)rdbuf[i] = '\0';
 	    printf("\nEnter an operator:");
 	    p = read(fd_stdin, rdbuf, 70);
 		rdbuf[p] = 0;
@@ -2615,12 +2616,15 @@ void runCalculator(int fd_stdin){
 		printf("Input two numbers, the first number:");
 		q=read(fd_stdin,valbuf1,70);
 		valbuf1[q]=0;
-		a=valbuf1[0]-48;
+		if(valbuf1[0]==45)a=-(valbuf1[1]-48);
+		else a=valbuf1[0]-48;
 		printf("Input the second number:");
 		q=read(fd_stdin,valbuf2,70);
 		valbuf2[q]=0;
-		b=valbuf2[0]-48;
+		if(valbuf2[0]==45)b=-(valbuf2[1]-48);
+		else b=valbuf2[0]-48;
 	    }
+	    printf("%d %d\n",a,b);
 	    switch(control)
 	    {
 	    case '+' :
