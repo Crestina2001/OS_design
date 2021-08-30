@@ -296,11 +296,17 @@ if(strcmp(rdbuf, "hello") == 0){}
 ### 3.1 帮助界面
 ### 3.2 日历
 本项目实现了日历功能，通过输入年份以及月份，可以输出该月的日历，并对不符的输入进行检测与提示。
-显示某月日历：![](..\unknownOS\assets\cal_init.png)
+显示某月日历：
 
-检测年份是否有误：![](..\unknownOS\assets\cal_wrong year.png)
+![](..\unknownOS\assets\cal_init.png)
 
-检测月份是否有误:![](..\unknownOS\assets\cal_wrong month.png)
+检测年份是否有误：
+
+![](..\unknownOS\assets\cal_wrong year.png)
+
+检测月份是否有误:
+
+![](..\unknownOS\assets\cal_wrong month.png)
 
 
 ### 3.3 2048
@@ -313,8 +319,10 @@ if(strcmp(rdbuf, "hello") == 0){}
 
 ### 3.4 推箱子
 本项目实现了经典的推箱子小游戏，通过 wsad 控制人物（P）上下左右移动的操作，并给出实时分数，每有一个箱子在目标区域（D）得一分，并可通过 q 退出（quit）。
-初始化：![](..\unknownOS\assets\box.png)
+初始化：
+
+![](..\unknownOS\assets\box.jpg)
 
 通过不断操作，分数不断上升，当游戏无法再进行下去时，或者要主动退出，按q可退出游戏
 
-![](..\unknownOS\assets\box-exit.png)
+![](..\unknownOS\assets\box-exit.jpg)
