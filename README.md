@@ -302,11 +302,11 @@ if(strcmp(rdbuf, "hello") == 0){}
 
 检测年份是否有误：
 
-![](..\unknownOS\assets\cal_wrong year.png)
+![](..\unknownOS\assets\cal_wrong_year.png)
 
 检测月份是否有误:
 
-![](..\unknownOS\assets\cal_wrong month.png)
+![](..\unknownOS\assets\cal_wrong_month.png)
 
 
 ### 3.3 2048
