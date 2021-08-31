@@ -311,11 +311,11 @@ if(strcmp(rdbuf, "hello") == 0){}
 
 代码展示： 
 
-<img src="..\unknownOS\assets\processcode1.png" alt="wrong" style="zoom:50%;" />
+[img](assets/processcode1.png)
 
-<img src="..\unknownOS\assets\processcode3.png" alt="wrong" style="zoom:50%;" />
+[img](assets/processcode3.png)
 
-<img src="..\unknownOS\assets\processcode2.png" alt="wrong" style="zoom:50%;" />
+[img](assets/processcode2.png)
 
 #### 操作说明
 
@@ -324,46 +324,45 @@ if(strcmp(rdbuf, "hello") == 0){}
 主页是进程管理欢迎界⾯，显示进程管理支持的所有指令以及它们的功能。 
 
 
-
-<img src="..\unknownOS\assets\processwelcome.png" alt="wrong" style="zoom:50%;" />
+[img](assets/processwelcome.png)
 
 `show`：输入show， 展示本系统当前所有进程的ID，进程名称，优先级以及是否正在运行。
 
-<img src="..\unknownOS\assets\show.png" alt="wrong" style="zoom:50%;" />
+[img](assets/show.png)
 
 `pause [id]`：暂停目标进程，若目标进程id非法或不可暂停等情况将反馈信息。
 
 id非法：
 
-<img src="..\unknownOS\assets\exceedrange.png" alt="wrong" style="zoom:50%;" />
+[img](assets/exceedrange.png)
 
 不可结束：
 
-<img src="..\unknownOS\assets\systemprocess.png" alt="wrong" style="zoom:50%;" />
+[img](assets/systemprocess.png)
 
 成功执行：
 
-<img src="..\unknownOS\assets\pausesuccess.png" alt="wrong" style="zoom:50%;" />
+[img](assets/pausesuccess.png)
 
 `start [id]`： 启动未运行进程，若目标进程不存在，id 非法或目标进程已在运行等，则反馈信息。
 
 已在运行：
 
-<img src="..\unknownOS\assets\alreadyrun.png" alt="wrong" style="zoom:50%;" />
+[img](assets/alreadyrun.png)
 
 成功执行：
 
-<img src="..\unknownOS\assets\startsuccess.png" alt="wrong" style="zoom:50%;" />
+[img](assets/startsuccess.png)
 
 `kill [id]`： 结束进程，若目标进程id非法或不可暂停等情况将反馈信息。
 
 不可暂停：
 
-<img src="..\unknownOS\assets\systemkill.png" alt="wrong" style="zoom:50%;" />
+[img](assets/systemkill.png)
 
 成功执行：
 
-<img src="..\unknownOS\assets\kill5success.png" alt="wrong" style="zoom:50%;" />
+[img](assets/kill5success.png)
 
 `exit`：退出进程管理系统。
 
@@ -376,34 +375,34 @@ id非法：
 本项目实现了日历功能，通过输入年份以及月份，可以输出该月的日历，并对不符的输入进行检测与提示。
 显示某月日历：
 
-![](..\unknownOS\assets\cal_init.png)
+![](assets/cal_init.png)
 
 检测年份是否有误：
 
-![](..\unknownOS\assets\cal_wrong_year.png)
+![](assets/cal_wrong_year.png)
 
 检测月份是否有误:
 
-![](..\unknownOS\assets\cal_wrong_month.png)
+![](assets/cal_wrong_month.png)
 
 
 ### 3.3 2048
 本项目实现了经典的2048小游戏，通过 wsad 进行上下左右移动的操作，并给出实时分数，并可通过 q 退出（quit）。
-初始化：![](..\unknownOS\assets\2048.png)
+初始化：![](assets/2048.png)
 
 通过不断操作，分数不断上升，当游戏无法再进行下去时，或者要主动退出，按q可退出游戏
 
-![](..\unknownOS\assets\2048_exit.png)
+![](assets/2048_exit.png)
 
 ### 3.4  推箱子
 本项目实现了经典的推箱子小游戏，通过 wsad 控制人物（P）上下左右移动的操作，并给出实时分数，每有一个箱子在目标区域（D）得一分，并可通过 q 退出（quit）。
 初始化：
 
-![](..\unknownOS\assets\box.jpg)
+![](assets/box.jpg)
 
 通过不断操作，分数不断上升，当游戏无法再进行下去时，或者要主动退出，按q可退出游戏
 
-![](..\unknownOS\assets\box-exit.jpg)
+![](assets/box-exit.jpg)
 
 ### 3.5 KFC点餐系统
 
@@ -421,11 +420,11 @@ id非法：
 
 代码展示：
 
-<img src="..\unknownOS\assets\KFCcode1.png" alt="wrong" style="zoom:50%;" />
+[img](assets/KFCcode1.png)
 
-<img src="..\unknownOS\assets\KFCcode2.png" alt="wrong" style="zoom:50%;" />
+[img](assets/KFCcode2.png)
 
-<img src="..\unknownOS\assets\KFCcode3.png" alt="wrong" style="zoom: 50%;" />
+[img](assets/KFCcode3.png)
 
 
 
