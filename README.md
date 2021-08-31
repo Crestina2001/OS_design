@@ -72,7 +72,7 @@
 
   - 修改`bochsrc`，将如下的三个路径更换为实际的路径
 
-    ![img](assets/Inked3_LI.jpg)
+    !![](assets/Inked3_LI.jpg)
 
 * 运行操作系统
 
@@ -244,7 +244,7 @@ global sys_call
 
 输出的操作，采用了`printf()`函数，调用过程如下：
 
-![img](assets/1.jpg)
+![](assets/1.jpg)
 
 输入的操作，结合文件系统进行。主要是TTY与文件系统进行结合，为了完成类似Shell的输入方式，实现时有以下的关键代码：
 
@@ -311,11 +311,11 @@ if(strcmp(rdbuf, "hello") == 0){}
 
 代码展示： 
 
-[img](assets/processcode1.png)
+![](assets/processcode1.png)
 
-[img](assets/processcode3.png)
+![](assets/processcode3.png)
 
-[img](assets/processcode2.png)
+![](assets/processcode2.png)
 
 #### 操作说明
 
@@ -324,45 +324,45 @@ if(strcmp(rdbuf, "hello") == 0){}
 主页是进程管理欢迎界⾯，显示进程管理支持的所有指令以及它们的功能。 
 
 
-[img](assets/processwelcome.png)
+![](assets/processwelcome.png)
 
 `show`：输入show， 展示本系统当前所有进程的ID，进程名称，优先级以及是否正在运行。
 
-[img](assets/show.png)
+![](assets/show.png)
 
 `pause [id]`：暂停目标进程，若目标进程id非法或不可暂停等情况将反馈信息。
 
 id非法：
 
-[img](assets/exceedrange.png)
+![](assets/exceedrange.png)
 
 不可结束：
 
-[img](assets/systemprocess.png)
+![](assets/systemprocess.png)
 
 成功执行：
 
-[img](assets/pausesuccess.png)
+![](assets/pausesuccess.png)
 
 `start [id]`： 启动未运行进程，若目标进程不存在，id 非法或目标进程已在运行等，则反馈信息。
 
 已在运行：
 
-[img](assets/alreadyrun.png)
+![](assets/alreadyrun.png)
 
 成功执行：
 
-[img](assets/startsuccess.png)
+![](assets/startsuccess.png)
 
 `kill [id]`： 结束进程，若目标进程id非法或不可暂停等情况将反馈信息。
 
 不可暂停：
 
-[img](assets/systemkill.png)
+![](assets/systemkill.png)
 
 成功执行：
 
-[img](assets/kill5success.png)
+![](assets/kill5success.png)
 
 `exit`：退出进程管理系统。
 
@@ -420,11 +420,11 @@ id非法：
 
 代码展示：
 
-[img](assets/KFCcode1.png)
+![](assets/KFCcode1.png)
 
-[img](assets/KFCcode2.png)
+![](assets/KFCcode2.png)
 
-[img](assets/KFCcode3.png)
+![](assets/KFCcode3.png)
 
 
 
