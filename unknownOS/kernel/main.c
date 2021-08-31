@@ -49,6 +49,38 @@ struct fileBlock
 struct fileBlock blocks[MAX_FILE_NUM];
 int IDLog[MAX_FILE_NUM];
 
+//search by name
+int searchByName(char *path, int *name, int i, int offset)
+{
+	int len = 0;
+	while (blocks[i].fileName[len] != 0)
+	{
+		len++;
+	}
+	//printf("%d\n",len);
+	if (strcmp(name, blocks[i].fileName) == 0)
+	{
+		strcpy(path + offset, name);
+		path[len + offset] = 0;
+		printf("%s\n", path);
+		return 1;
+	}
+	if (blocks[i].childrenNumber == 0)
+		return -1;
+	strcpy(path + offset, blocks[i].fileName);
+	offset += len;
+	path[offset] = '/';
+	offset++;
+	int res = -1;
+	for (int j = 0; j < blocks[i].childrenNumber; ++j)
+	{
+		if (searchByName(path, name, blocks[i].children[j], offset) == 1)
+		{
+			res = 1;
+		}
+	}
+	return res;
+}
 //文件管理主函数
 void runFileManage(int fd_stdin)
 {
@@ -79,9 +111,9 @@ void runFileManage(int fd_stdin)
 		{
 			target[i] = rdbuf[i];
 		}
-		if (rdbuf[0] == 't' && rdbuf[1] == 'o' && rdbuf[2] == 'u' && rdbuf[3] == 'c' && rdbuf[4] == 'h')
+		if (rdbuf[0] == 'c' && rdbuf[1] == 'r' && rdbuf[2] == 'e' && rdbuf[3] == 'a' && rdbuf[4] == 't' && rdbuf[5] == 'e')
 		{
-			if (rdbuf[5] != ' ')
+			if (rdbuf[6] != ' ')
 			{
 				printf("You should add the filename, like \"create XXX\".\n");
 				printf("Please input [help] to know more.\n");
@@ -89,22 +121,22 @@ void runFileManage(int fd_stdin)
 			}
 			for (int i = 0; i < MAX_FILE_NAME_LENGTH && i < r - 3; i++)
 			{
-				_name[i] = rdbuf[i + 6];
+				_name[i] = rdbuf[i + 7];
 			}
 			CreateFIle(_name, 0);
 		}
-		else if (rdbuf[0] == 'm' && rdbuf[1] == 'k' && rdbuf[2] == 'd' && rdbuf[3] == 'i' && rdbuf[4] == 'r')
+		else if (rdbuf[0] == 'm' && rdbuf[1] == 'k' && rdbuf[2] == 'f' && rdbuf[3] == 'd')
 		{
-			if (rdbuf[5] != ' ')
+			if (rdbuf[4] != ' ')
 			{
-				printf("You should add the dirname, like \"mkdir XXX\".\n");
+				printf("You should add the dirname, like \"mkfd XXX\".\n");
 				printf("Please input [help] to know more.\n");
 				continue;
 			}
 			char N[MAX_FILE_NAME_LENGTH];
 			for (int i = 0; i < MAX_FILE_NAME_LENGTH && i < r - 3; i++)
 			{
-				_name[i] = rdbuf[i + 6];
+				_name[i] = rdbuf[i + 5];
 			}
 			CreateFIle(_name, 1);
 		}
@@ -182,17 +214,17 @@ void runFileManage(int fd_stdin)
 			else
 				printf("No such file!");
 		}
-		else if (strcmp(target, "rm") == 0)
+		else if (rdbuf[0] == 'd' && rdbuf[1] == 'e' && rdbuf[2] == 'l' && rdbuf[3] == 'e' && rdbuf[4] == 't' && rdbuf[5] == 'e')
 		{
-			if (rdbuf[2] != ' ')
+			if (rdbuf[6] != ' ')
 			{
-				printf("You should add the filename or dirname, like \"rm XXX\".\n");
+				printf("You should add the filename or dirname, like \"delete XXX\".\n");
 				printf("Please input [help] to know more.\n");
 				continue;
 			}
 			for (int i = 0; i < MAX_FILE_NAME_LENGTH && i < r - 3; i++)
 			{
-				_name[i] = rdbuf[i + 3];
+				_name[i] = rdbuf[i + 7];
 			}
 			int ID = SearchFile(_name);
 			if (ID >= 0)
@@ -214,6 +246,26 @@ void runFileManage(int fd_stdin)
 			}
 			else
 				printf("No such file!\n");
+		}
+		else if (rdbuf[0] == 'f' && rdbuf[1] == 'i' && rdbuf[2] == 'n' && rdbuf[3] == 'd')
+		{
+			if (rdbuf[4] != ' ')
+			{
+				printf("You should add the filename, like \"find XXX\".\n");
+				printf("Please input [help] to know more.\n");
+				continue;
+			}
+			for (int i = 0; i < MAX_FILE_NAME_LENGTH && i < r - 3; i++)
+			{
+				_name[i] = rdbuf[i + 5];
+			}
+			char _path[1000];
+			for (int i = 0; i < 1000; ++i)
+				_path[i] = 0;
+			int is_found = searchByName(_path, _name, 0, 0);
+			//printf("%s\n",_path);
+			if (is_found == -1)
+				printf("Not Found!\n");
 		}
 		else if (strcmp(target, "sv") == 0)
 		{
@@ -428,7 +480,7 @@ int CreateFIle(char *fileName, int fileType)
 		{
 			if (strcmp(blocks[blocks[currentFileID].children[i]].fileName, fileName) == 0)
 			{
-				if (fileType)
+				if (blocks[blocks[currentFileID].children[i]].fileType == 1)
 				{
 					printf("You have a folder of same name!\n");
 				}
@@ -452,7 +504,7 @@ int CreateFIle(char *fileName, int fileType)
 		initFileBlock(target, fileName, fileType);
 		blocks[currentFileID].children[blocks[currentFileID].childrenNumber] = target;
 		blocks[currentFileID].childrenNumber++;
-		if (fileType)
+		if (fileType == 1)
 		{
 			printf("Create directory %s successful!\n", fileName);
 		}
@@ -536,18 +588,20 @@ void ShowMessage()
 	printf("      #                                                        **        #\n");
 	printf("      #         [COMMAND]                 [FUNCTION]           **        #\n");
 	printf("      #                                                                  #\n");
-	printf("      #     $ touch [filename]  |   create a new .txt file               #\n");
-	printf("      #     $ mkdir [dirname]   |   create a new folder                  #\n");
+	printf("      #     $ create [filename] |   create a new .txt file               #\n");
+	printf("      #     $ mkfd [dirname]    |   create a new folder                  #\n");
+	printf("      #     $ find [filename]   |   search by name globally              #\n");
 	printf("      #     $ ls                |   list the elements in this level      #\n");
 	printf("      #     $ cd [dirname]      |   switch work path to this directory   #\n");
 	printf("      #     $ cd ..             |   return to the superior directory     #\n");
-	printf("      #     $ rm [name]         |   delete a file or directory           #\n");
+	printf("      #     $ delete [name]     |   delete a file or directory           #\n");
 	printf("      #     $ help              |   show command list of this system     #\n");
 	printf("      #     $ clear             |   clear the cmd                        #\n");
-	printf("      #                                                                  #\n");
-	printf("      #                                                                  #\n");
-	printf("      #               Powered by doubleZ, budi, flyingfish               #\n");
-	printf("      #                       ALL RIGHT REVERSED                         #\n");
+	printf("      #     $ sv                |   save to the disk                     #\n");
+	printf("      #     $ quit              |   quit the interface                   #\n");
+	printf("      #                      Powered by unknownOS                         #\n");
+	printf("      #                   By hms, shenbo, xds, ysx, zby                  #\n");
+	printf("      #                      ===  ======  ===  ===  ===                  #\n");
 	printf("      ====================================================================\n");
 
 	printf("\n\n");
@@ -912,8 +966,6 @@ PUBLIC int get_ticks()
 	return msg.RETVAL;
 }
 
-void runCalculator(int fd_stdin);  //declaration
-
 /*======================================================================*
 							   Terminal
  *======================================================================*/
@@ -943,7 +995,7 @@ void Terminal()
 	/*================================= system main menu ========+++++=======================*/
 
 	CommandList();
-	
+
 	while (1)
 	{
 		printf("unknown_user@unknownOS: $ ");
@@ -1007,11 +1059,19 @@ void Terminal()
 			}
 			continue;
 		}
-		// else if (!strcmp(rdbuf, "order"))
-		// {
-		// 	clear();
-		// 	runKFC(fd_stdin);
-		// }
+		else if (!strcmp(command3, "gcd"))
+		{
+			if (strlen(rdbuf) > 4)
+			{
+				gcdMain(rdbuf + 4);
+			}
+			else
+			{
+				char *str = "NULL";
+				gcdMain(str);
+			}
+			continue;
+		}
 		else if (!strcmp(rdbuf, "process"))
 		{
 			clear();
@@ -1360,25 +1420,25 @@ void gradualBoot()
 void CommandList()
 {
 	printf("      ====================================================================\n");
-	printf("      #                                          Welcome to                 #\n");
-	printf("      #       _                                  unknownOS                  #\n");
-	printf("      #      / /\\                                                          #\n");
-	printf("      #     / /  \\                            [COMMAND LIST]               #\n");
-	printf("      #    / / /\\ \\___              $ menu --- show the command list      #\n");
+	printf("      #                                          Welcome to              #\n");
+	printf("      #       _                                  unknownOS               #\n");
+	printf("      #      / /\\                                                        #\n");
+	printf("      #     / /  \\                            [COMMAND LIST]             #\n");
+	printf("      #    / / /\\ \\___              $ menu --- show the command list     #\n");
 	printf("      #   / / /\\ \\__  /\\            $ clear --- clear the cmd            #\n");
-	printf("      #  /_/ /  \\__/ / /            $ how [command]                        #\n");
+	printf("      #  /_/ /  \\__/ / /            $ how [command]                      #\n");
 	printf("      #  \\ \\ \\    /_/ /                  --- know more about the command #\n");
-	printf("      #   \\_\\/    \\ \\ \\             $ play [-option]                   #\n");
-	printf("      #            \\_\\/_                 --- play the built-in game       #\n");
-	printf("      #              /_/\\           $ cal [YYYY/MM]                        #\n");
-	printf("      #              \\_\\/               --- display a calendar            #\n");
-	printf("      #                             $ process --- process manager           #\n");
-	printf("      #                             $ file --- file manager                 #\n");
-	printf("      #                                                                     #\n");
-	printf("      #                                                                     #\n");
-	printf("      #                                                                     #\n");
-	printf("      #                                                                     #\n");
-	printf("      #                                                                     #\n");
+	printf("      #   \\_\\/    \\ \\ \\             $ play [-option]                     #\n");
+	printf("      #            \\_\\/_                 --- play the built-in game      #\n");
+	printf("      #              /_/\\           $ cal [YYYY/MM]                      #\n");
+	printf("      #              \\_\\/               --- display a calendar          #\n");
+	printf("      #                             $ gcd [a,b]                          #\n");
+	printf("      #                                   --- calculate gcd of a and b   #\n");
+	printf("      #                             $ process --- process manager        #\n");
+	printf("      #                             $ file --- file manager              #\n");
+	printf("      #                                                                  #\n");
+	printf("      #                   By hms, shenbo, xds, ysx, zby                  #\n");
+	printf("      #                      ===  ======  ===  ===  ===                  #\n");
 	printf("      ====================================================================\n");
 
 	printf("\n\n");
@@ -1417,31 +1477,6 @@ void howMain(char *option)
 	{
 		printf("Sorry, you should add an option.\n");
 	}
-	else if (!strcmp(option, "whats"))
-	{
-		clear();
-		printf("      ====================================================================\n");
-		printf("      #                                                                  #\n");
-		printf("      #    whawhawhawh                  <COMMAND --- whats>                #\n");
-		printf("      #   whawhawhawhawh                                                 #\n");
-		printf("      #  wha          what                                               #\n");
-		printf("      #                 wha           Type math expression to                                 #\n");
-		printf("      #                 wha              calculate values                                #\n");
-		printf("      #                wha                                               #\n");
-		printf("      #               wha                                                #\n");
-		printf("      #              wha                                                 #\n");
-		printf("      #             wha                                                  #\n");
-		printf("      #            wha                                                   #\n");
-		printf("      #           wha                                                    #\n");
-		printf("      #                                                                  #\n");
-		printf("      #           wha                                                    #\n");
-		printf("      #            wha                                                   #\n");
-		printf("      #                                                                  #\n");
-		printf("      #                  Input [menu] to go back to menu.                #\n");
-		printf("      #                                                                  #\n");
-		printf("      #                                                                  #\n");
-		printf("      ====================================================================\n");
-	}
 	else if (!strcmp(option, "menu"))
 	{
 		clear();
@@ -1478,8 +1513,8 @@ void howMain(char *option)
 		printf("      #                 ppp                 --- Play famous 2048 game!   #\n");
 		printf("      #                 ppp             -box                             #\n");
 		printf("      #                ppp                  --- Play Pushbox game!       #\n");
-		printf("      #               ppp                                                #\n");
-		printf("      #              ppp                                                 #\n");
+		printf("      #               ppp               -KFC                             #\n");
+		printf("      #              ppp                    --- Play KFC order game      #\n");
 		printf("      #             ppp                                                  #\n");
 		printf("      #            ppp       For example,                                #\n");
 		printf("      #           ppp        $ play -2048                                #\n");
@@ -1517,8 +1552,33 @@ void howMain(char *option)
 		printf("      #                                                                  #\n");
 		printf("      ====================================================================\n");
 	}
+	else if (!strcmp(option, "gcd"))
+	{
+		clear();
+		printf("      ====================================================================\n");
+		printf("      #                                                                  #\n");
+		printf("      #    gcdgcdgcgcd                                                   #\n");
+		printf("      #   gcdgcdgcgcdgcd                                                 #\n");
+		printf("      #  gcd          gcdg                                               #\n");
+		printf("      #                 gcd                                              #\n");
+		printf("      #                 gcd                                              #\n");
+		printf("      #                gcd             <COMMAND --- gcd>                 #\n");
+		printf("      #               gcd                Input \"a,b\"                   #\n");
+		printf("      #              gcd            For example, $ gcd 8,12              #\n");
+		printf("      #             gcd          returns the result which is 4           #\n");
+		printf("      #            gcd                                                   #\n");
+		printf("      #           gcd                                                    #\n");
+		printf("      #                                                                  #\n");
+		printf("      #           gcd                                                    #\n");
+		printf("      #            gcd                                                   #\n");
+		printf("      #                                                                  #\n");
+		printf("      #                  Input [menu] to go back to menu.                #\n");
+		printf("      #                                                                  #\n");
+		printf("      #                                                                  #\n");
+		printf("      ====================================================================\n");
+	}
 	else if (!strcmp(option, "cal"))
-		{
+	{
 		clear();
 		printf("      ====================================================================\n");
 		printf("      #                                                                  #\n");
@@ -1575,12 +1635,12 @@ void howMain(char *option)
 		printf("      #    procprocpro                                                   #\n");
 		printf("      #   procprocprocpr                                                 #\n");
 		printf("      #  pro          proc                                               #\n");
-		printf("      #                 pro                                              #\n");
-		printf("      #                 pro                                              #\n");
-		printf("      #                pro                                               #\n");
+		printf("      #                 pro                Enter $ process               #\n");
+		printf("      #                 pro                  to test our                 #\n");
+		printf("      #                pro            process management system          #\n");
 		printf("      #               pro                                                #\n");
-		printf("      #              pro                                                 #\n");
-		printf("      #             pro                                                  #\n");
+		printf("      #              pro                 When you are entered            #\n");
+		printf("      #             pro             run \"$ help\" to see further info   #\n");
 		printf("      #            pro                                                   #\n");
 		printf("      #           pro                                                    #\n");
 		printf("      #                                                                  #\n");
@@ -1600,11 +1660,11 @@ void howMain(char *option)
 		printf("      #    filefilefile                                                  #\n");
 		printf("      #   filefilefilefi                                                 #\n");
 		printf("      #  file          file                                              #\n");
-		printf("      #                 file                                             #\n");
-		printf("      #                 file                                             #\n");
+		printf("      #                 file                 Enter $ file                #\n");
+		printf("      #                 file            to test our file system          #\n");
 		printf("      #                file                                              #\n");
-		printf("      #               file                                               #\n");
-		printf("      #              file                                                #\n");
+		printf("      #               file                when entered you can           #\n");
+		printf("      #              file          run \"$ help\" to see further info    #\n");
 		printf("      #             file                                                 #\n");
 		printf("      #            file                                                  #\n");
 		printf("      #           file                                                   #\n");
@@ -1719,6 +1779,58 @@ void display_month(int year, int month)
 	printf("\n");
 }
 
+int gcd(int a, int b)
+{
+	if (a == b)
+	{
+		return a;
+	}
+	else if (a > b)
+	{
+		return gcd(a - b, b);
+	}
+	else
+	{
+		return gcd(b - a, a);
+	}
+}
+
+void gcdMain(char *exp)
+{
+	int a, b;
+	char a_str[3] = "\0", b_str[3] = "\0";
+	if (!strcmp(exp, "NULL"))
+	{
+		printf("Sorry please add 2 integer in range 1-999 in format \"a,b\"");
+		printf("For example : $ gcd 1,2");
+	}
+	else
+	{
+		if (exp[0] < '0' || exp[0] > '9')
+		{
+			printf("Wrong input");
+		}
+		else
+		{
+			char *value = exp;
+			int i = 0;
+			for (int j = 0; i < strlen(value) && value[i] != ',' && value[i] != ' '; ++i, ++j)
+			{
+				a_str[i] = value[i];
+			}
+			++i;
+			for (int j = 0; i < strlen(value) && value[i] != ' '; ++i, ++j)
+			{
+				b_str[j] = value[i];
+			}
+			atoi(a_str, &a);
+			atoi(b_str, &b);
+		}
+		int result = gcd(a, b);
+		printf("The result is %d\n", result);
+	}
+}
+
 void calMain(char *option)
 {
 	int year, month;
@@ -1792,7 +1904,8 @@ void gameMain(char *option, int fd_stdin, int fd_stdout)
 	{
 		Runpushbox(fd_stdin, fd_stdout);
 	}
-	else if (!strcmp(option,"-KFC")){
+	else if (!strcmp(option, "-KFC"))
+	{
 		runKFC(fd_stdin);
 	}
 	else
@@ -1817,16 +1930,14 @@ void runKFC(int fd_stdin)
 							2048
  *======================================================================*/
 
-
-#define KEY_CODE_UP    0x41
-#define KEY_CODE_DOWN  0x42
-#define KEY_CODE_LEFT  0x44
+#define KEY_CODE_UP 0x41
+#define KEY_CODE_DOWN 0x42
+#define KEY_CODE_LEFT 0x44
 #define KEY_CODE_RIGHT 0x43
-#define KEY_CODE_QUIT  0x71
+#define KEY_CODE_QUIT 0x71
 struct termios old_config;
 
-
-static char config_path[4096] = { 0 };
+static char config_path[4096] = {0};
 static void loop_game(int fd_stdin);
 static void reset_game();
 static void left();
@@ -1842,7 +1953,7 @@ static int score;
 static int if_add;
 static int if_over;
 static int if_exit;
-static char* read_keyboard(int fd_stdin);
+static char *read_keyboard(int fd_stdin);
 
 void Game_2048(fd_stdin, fd_stdout)
 {
@@ -1852,9 +1963,10 @@ void Game_2048(fd_stdin, fd_stdout)
 	clear();
 }
 
-
-void loop_game(int fd_stdin) {
-	while (1) {
+void loop_game(int fd_stdin)
+{
+	while (1)
+	{
 		char rdbuf[128];
 		int r = 0;
 		r = read(fd_stdin, rdbuf, 70);
@@ -1865,39 +1977,48 @@ void loop_game(int fd_stdin) {
 		}
 		rdbuf[r] = 0;
 		char cmd = rdbuf[0];
-		if (if_exit) {
-			if (cmd == 'y' || cmd == 'Y') {
+		if (if_exit)
+		{
+			if (cmd == 'y' || cmd == 'Y')
+			{
 				clear_screen();
 				return;
 			}
-			else if (cmd == 'n' || cmd == 'N') {
+			else if (cmd == 'n' || cmd == 'N')
+			{
 				if_exit = 0;
 				refresh();
 				continue;
 			}
-			else {
+			else
+			{
 				continue;
 			}
 		}
 
-		if (if_over) {
-			if (cmd == 'y' || cmd == 'Y') {
+		if (if_over)
+		{
+			if (cmd == 'y' || cmd == 'Y')
+			{
 
 				reset_game();
 				continue;
 			}
-			else if (cmd == 'n' || cmd == 'N') {
+			else if (cmd == 'n' || cmd == 'N')
+			{
 
 				clear();
 				return;
 			}
-			else {
+			else
+			{
 				continue;
 			}
 		}
 
 		if_add = 0;
-		switch (cmd) {
+		switch (cmd)
+		{
 		case 'a':
 			left();
 			break;
@@ -1917,26 +2038,31 @@ void loop_game(int fd_stdin) {
 			refresh();
 			continue;
 		}
-		if (if_add) {
+		if (if_add)
+		{
 			add_random();
 			refresh();
 		}
-		else if (if_exit) {
+		else if (if_exit)
+		{
 			refresh();
 		}
 	}
 }
 
-void reset_game() {
+void reset_game()
+{
 	score = 0;
 	if_add = 1;
 	if_over = 0;
 	if_exit = 0;
 	int n = get_ticks() % 16;
 	int i;
-	for (i = 0; i < 4; ++i) {
+	for (i = 0; i < 4; ++i)
+	{
 		int j;
-		for (j = 0; j < 4; ++j) {
+		for (j = 0; j < 4; ++j)
+		{
 			board[i][j] = (n-- == 0 ? 2 : 0);
 		}
 	}
@@ -1945,14 +2071,17 @@ void reset_game() {
 	refresh();
 }
 
-
-void add_random() {
+void add_random()
+{
 	int n = get_ticks() % get_blank();
 	int i;
-	for (i = 0; i < 4; ++i) {
+	for (i = 0; i < 4; ++i)
+	{
 		int j;
-		for (j = 0; j < 4; ++j) {
-			if (board[i][j] == 0 && n-- == 0) {
+		for (j = 0; j < 4; ++j)
+		{
+			if (board[i][j] == 0 && n-- == 0)
+			{
 				board[i][j] = (get_ticks() % 10 ? 2 : 4);
 				return;
 			}
@@ -1960,26 +2089,31 @@ void add_random() {
 	}
 }
 
-
-int get_blank() {
+int get_blank()
+{
 	int n = 0;
 	int i;
-	for (i = 0; i < 4; ++i) {
+	for (i = 0; i < 4; ++i)
+	{
 		int j;
-		for (j = 0; j < 4; ++j) {
+		for (j = 0; j < 4; ++j)
+		{
 			board[i][j] == 0 ? ++n : 1;
 		}
 	}
 	return n;
 }
 
-
-void win_or_lose() {
+void win_or_lose()
+{
 	int i;
-	for (i = 0; i < 4; ++i) {
+	for (i = 0; i < 4; ++i)
+	{
 		int j;
-		for (j = 0; j < 3; ++j) {
-			if (board[i][j] == board[i][j + 1] || board[j][i] == board[j + 1][i]) {
+		for (j = 0; j < 3; ++j)
+		{
+			if (board[i][j] == board[i][j + 1] || board[j][i] == board[j + 1][i])
+			{
 				if_over = 0;
 				return;
 			}
@@ -1988,31 +2122,38 @@ void win_or_lose() {
 	if_over = 1;
 }
 
-void left() {
+void left()
+{
 
 	int i;
-	for (i = 0; i < 4; ++i) {
+	for (i = 0; i < 4; ++i)
+	{
 
 		int j, k;
-		for (j = 1, k = 0; j < 4; ++j) {
+		for (j = 1, k = 0; j < 4; ++j)
+		{
 			if (board[i][j] > 0)
 			{
-				if (board[i][k] == board[i][j]) {
+				if (board[i][k] == board[i][j])
+				{
 
 					score += board[i][k++] *= 2;
 					board[i][j] = 0;
 					if_add = 1;
 				}
-				else if (board[i][k] == 0) {
+				else if (board[i][k] == 0)
+				{
 
 					board[i][k] = board[i][j];
 					board[i][j] = 0;
 					if_add = 1;
 				}
-				else {
+				else
+				{
 
 					board[i][++k] = board[i][j];
-					if (j != k) {
+					if (j != k)
+					{
 
 						board[i][j] = 0;
 						if_add = 1;
@@ -2023,27 +2164,34 @@ void left() {
 	}
 }
 
-
-void right() {
+void right()
+{
 
 	int i;
-	for (i = 0; i < 4; ++i) {
+	for (i = 0; i < 4; ++i)
+	{
 		int j, k;
-		for (j = 2, k = 3; j >= 0; --j) {
-			if (board[i][j] > 0) {
-				if (board[i][k] == board[i][j]) {
+		for (j = 2, k = 3; j >= 0; --j)
+		{
+			if (board[i][j] > 0)
+			{
+				if (board[i][k] == board[i][j])
+				{
 					score += board[i][k--] *= 2;
 					board[i][j] = 0;
 					if_add = 1;
 				}
-				else if (board[i][k] == 0) {
+				else if (board[i][k] == 0)
+				{
 					board[i][k] = board[i][j];
 					board[i][j] = 0;
 					if_add = 1;
 				}
-				else {
+				else
+				{
 					board[i][--k] = board[i][j];
-					if (j != k) {
+					if (j != k)
+					{
 						board[i][j] = 0;
 						if_add = 1;
 					}
@@ -2053,27 +2201,34 @@ void right() {
 	}
 }
 
-
-void up() {
+void up()
+{
 
 	int i;
-	for (i = 0; i < 4; ++i) {
+	for (i = 0; i < 4; ++i)
+	{
 		int j, k;
-		for (j = 1, k = 0; j < 4; ++j) {
-			if (board[j][i] > 0) {
-				if (board[k][i] == board[j][i]) {
+		for (j = 1, k = 0; j < 4; ++j)
+		{
+			if (board[j][i] > 0)
+			{
+				if (board[k][i] == board[j][i])
+				{
 					score += board[k++][i] *= 2;
 					board[j][i] = 0;
 					if_add = 1;
 				}
-				else if (board[k][i] == 0) {
+				else if (board[k][i] == 0)
+				{
 					board[k][i] = board[j][i];
 					board[j][i] = 0;
 					if_add = 1;
 				}
-				else {
+				else
+				{
 					board[++k][i] = board[j][i];
-					if (j != k) {
+					if (j != k)
+					{
 						board[j][i] = 0;
 						if_add = 1;
 					}
@@ -2083,26 +2238,34 @@ void up() {
 	}
 }
 
-void down() {
+void down()
+{
 
 	int i;
-	for (i = 0; i < 4; ++i) {
+	for (i = 0; i < 4; ++i)
+	{
 		int j, k;
-		for (j = 2, k = 3; j >= 0; --j) {
-			if (board[j][i] > 0) {
-				if (board[k][i] == board[j][i]) {
+		for (j = 2, k = 3; j >= 0; --j)
+		{
+			if (board[j][i] > 0)
+			{
+				if (board[k][i] == board[j][i])
+				{
 					score += board[k--][i] *= 2;
 					board[j][i] = 0;
 					if_add = 1;
 				}
-				else if (board[k][i] == 0) {
+				else if (board[k][i] == 0)
+				{
 					board[k][i] = board[j][i];
 					board[j][i] = 0;
 					if_add = 1;
 				}
-				else {
+				else
+				{
 					board[--k][i] = board[j][i];
-					if (j != k) {
+					if (j != k)
+					{
 						board[j][i] = 0;
 						if_add = 1;
 					}
@@ -2112,7 +2275,8 @@ void down() {
 	}
 }
 
-void refresh() {
+void refresh()
+{
 	clear();
 
 	printf("\n\n\n\n");
@@ -2120,42 +2284,55 @@ void refresh() {
 	printf("               --------------------------------------------------");
 	printf("\n\n                             |****|****|****|****|\n");
 	int i;
-	for (i = 0; i < 4; ++i) {
+	for (i = 0; i < 4; ++i)
+	{
 		printf("                             |");
 		int j;
-		for (j = 0; j < 4; ++j) {
-			if (board[i][j] != 0) {
-				if (board[i][j] < 10) {
+		for (j = 0; j < 4; ++j)
+		{
+			if (board[i][j] != 0)
+			{
+				if (board[i][j] < 10)
+				{
 					printf("  %d |", board[i][j]);
 				}
-				else if (board[i][j] < 100) {
+				else if (board[i][j] < 100)
+				{
 					printf(" %d |", board[i][j]);
 				}
-				else if (board[i][j] < 1000) {
+				else if (board[i][j] < 1000)
+				{
 					printf(" %d|", board[i][j]);
 				}
-				else if (board[i][j] < 10000) {
+				else if (board[i][j] < 10000)
+				{
 					printf("%4d|", board[i][j]);
 				}
-				else {
+				else
+				{
 					int n = board[i][j];
 					int k;
-					for (k = 1; k < 20; ++k) {
+					for (k = 1; k < 20; ++k)
+					{
 						n = n >> 1;
-						if (n == 1) {
+						if (n == 1)
+						{
 							printf("2^%02d|", k);
 							break;
 						}
 					}
 				}
 			}
-			else printf("    |");
+			else
+				printf("    |");
 		}
 
-		if (i < 3) {
+		if (i < 3)
+		{
 			printf("\n                             |****|****|****|****|\n");
 		}
-		else {
+		else
+		{
 			printf("\n                             |****|****|****|****|\n");
 		}
 	}
@@ -2164,15 +2341,17 @@ void refresh() {
 	printf("                  [W]:UP [S]:DOWN [A]:LEFT [D]:RIGHT [Q]:EXIT\n");
 	printf("                  Enter your command:");
 
-	if (get_blank() == 0) {
+	if (get_blank() == 0)
+	{
 		win_or_lose();
-		if (if_over) {
+		if (if_over)
+		{
 			printf("\r                      \nGAME OVER! TRY AGAIN? [Y/N]:     \b\b\b\b");
 		}
 	}
-	if (if_exit) {
+	if (if_exit)
+	{
 		printf("\r                   \nQUIT THE GAME? [Y/N]:   \b\b");
-
 	}
 }
 
@@ -2225,18 +2404,18 @@ void draw_map(int map[9][11])
 void boxMenu()
 {
 	printf("      ================================================================\n");
-		printf("      #                                       Welcome to             #\n");
-		printf("      #     boxboxboxbo                      pushBoxGame             #\n");
-		printf("      #   boxboxboxboxbox                                            #\n");
-		printf("      #  box          boxbo                   Instrcution            #\n");
-		printf("      #                 box              set: p:People b:BOX         #\n");
-		printf("      #               box                     #:Wall   D:Destination #\n");
-		printf("      #             box                  operation:                  #\n");
-		printf("      #          box                          s:Down d:Right         #\n");
-		printf("      #                                       w:Up   a:Left  q:Quit  #\n");
-		printf("      #          box                                                 #\n");
-		printf("      #          box                          Enter'q' to quit       #\n");
-		printf("      ================================================================\n");
+	printf("      #                                       Welcome to             #\n");
+	printf("      #     boxboxboxbo                      pushBoxGame             #\n");
+	printf("      #   boxboxboxboxbox                                            #\n");
+	printf("      #  box          boxbo                   Instrcution            #\n");
+	printf("      #                 box              set: p:People b:BOX         #\n");
+	printf("      #               box                     #:Wall   D:Destination #\n");
+	printf("      #             box                  operation:                  #\n");
+	printf("      #          box                          s:Down d:Right         #\n");
+	printf("      #                                       w:Up   a:Left  q:Quit  #\n");
+	printf("      #          box                                                 #\n");
+	printf("      #          box                          Enter'q' to quit       #\n");
+	printf("      ================================================================\n");
 	printf("\n\n");
 }
 
