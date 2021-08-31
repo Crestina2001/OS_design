@@ -72,7 +72,7 @@
 
   - 修改`bochsrc`，将如下的三个路径更换为实际的路径
 
-    ![img](assets/1.png)
+    ![img](assets/Inked3_LI.jpg)
 
 * 运行操作系统
 
@@ -246,6 +246,7 @@ global sys_call
 
 <img src="..\assets\1.jpg" alt="wrong" style="zoom:50%;" />
 ![](\assets\1.jpg)
+![img](assets/1.jpg)
 
 输入的操作，结合文件系统进行。主要是TTY与文件系统进行结合，为了完成类似Shell的输入方式，实现时有以下的关键代码：
 
