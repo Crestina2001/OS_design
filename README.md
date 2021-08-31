@@ -295,7 +295,79 @@ if(strcmp(rdbuf, "hello") == 0){}
 
 ## 2. 系统级应用
 
+### 2.1 进程管理
 
+#### 功能实现
+
+本进程管理程序功能主要包括进程状态的展示、进程的暂停和启动以及结束进程。
+
+进程展示：该功能读取系统进程表 proc_table 的表项以及其各个属性并打印到屏幕。
+
+暂停进程：该功能通过读取进程 ID 字符串，并将其换算为数值，以该数值做下标读取系统进程表，修改目标表项 priority为0以达到暂停进程的目的。
+
+启动进程：该功能通过读取进程 ID 字符串，并将其换算为数值，以该数值做下标读取系统进程表，修改目标表项 priority的0为1以达到启动进程的目的。
+
+结束进程：该功能通过读取进程 ID 字符串，并将其换算为数值，以该数值做下标读取系统进程表，修改目标表项 p_flags为1以达到结束进程的目的。
+
+代码展示： 
+
+<img src="..\unknownOS\assets\processcode1.png" alt="wrong" style="zoom:50%;" />
+
+<img src="..\unknownOS\assets\processcode3.png" alt="wrong" style="zoom:50%;" />
+
+<img src="..\unknownOS\assets\processcode2.png" alt="wrong" style="zoom:50%;" />
+
+#### 操作说明
+
+在命令行中输入process进入进程管理。
+
+主页是进程管理欢迎界⾯，显示进程管理支持的所有指令以及它们的功能。 
+
+
+
+<img src="..\unknownOS\assets\processwelcome.png" alt="wrong" style="zoom:50%;" />
+
+`show`：输入show， 展示本系统当前所有进程的ID，进程名称，优先级以及是否正在运行。
+
+<img src="..\unknownOS\assets\show.png" alt="wrong" style="zoom:50%;" />
+
+`pause [id]`：暂停目标进程，若目标进程id非法或不可暂停等情况将反馈信息。
+
+id非法：
+
+<img src="..\unknownOS\assets\exceedrange.png" alt="wrong" style="zoom:50%;" />
+
+不可结束：
+
+<img src="..\unknownOS\assets\systemprocess.png" alt="wrong" style="zoom:50%;" />
+
+成功执行：
+
+<img src="..\unknownOS\assets\pausesuccess.png" alt="wrong" style="zoom:50%;" />
+
+`start [id]`： 启动未运行进程，若目标进程不存在，id 非法或目标进程已在运行等，则反馈信息。
+
+已在运行：
+
+<img src="..\unknownOS\assets\alreadyrun.png" alt="wrong" style="zoom:50%;" />
+
+成功执行：
+
+<img src="..\unknownOS\assets\startsuccess.png" alt="wrong" style="zoom:50%;" />
+
+`kill [id]`： 结束进程，若目标进程id非法或不可暂停等情况将反馈信息。
+
+不可暂停：
+
+<img src="..\unknownOS\assets\systemkill.png" alt="wrong" style="zoom:50%;" />
+
+成功执行：
+
+<img src="..\unknownOS\assets\kill5success.png" alt="wrong" style="zoom:50%;" />
+
+`exit`：退出进程管理系统。
+
+`clear`：清空屏幕当前的内容。
 
 ## 3. 用户级应用
 
@@ -332,3 +404,28 @@ if(strcmp(rdbuf, "hello") == 0){}
 通过不断操作，分数不断上升，当游戏无法再进行下去时，或者要主动退出，按q可退出游戏
 
 ![](..\unknownOS\assets\box-exit.jpg)
+
+### 3.5 KFC点餐系统
+
+#### 功能实现
+
+本KFC点餐系统展示菜单和套餐信息，需要用户输入点单指令来执行程序，给出订单信息和价格，并对错误指令进行提示。指令的每个字母都要在A和N之间，否则为错误指令。在点餐内容包含套餐时，会优先按照套餐的较低价格来计算总价。
+
+用结构体数组来记录菜单和套餐信息并输出到屏幕上。
+
+用一个二维数组`disnum**`来记录每个套餐的每个餐的数量，例，`disnum [0][3]==1`，代表`Meal Box1`包含一份D食品，而`disnum [0][1]==0`，代表`Meal Box1`不包含B食品。
+
+用一位数组`menuchoice*`记录用户点单的每个餐食的数量。
+
+先判断是否包含套餐，若包含则减去套餐内各餐食的数目，并在总价中加上套餐钱数，从而达到优先按照套餐的折扣价来收费的目的。不包含套餐之后，用每个餐食的单价乘以其数目加到总价中。
+
+代码展示：
+
+<img src="..\unknownOS\assets\KFCcode1.png" alt="wrong" style="zoom:50%;" />
+
+<img src="..\unknownOS\assets\KFCcode2.png" alt="wrong" style="zoom:50%;" />
+
+<img src="..\unknownOS\assets\KFCcode3.png" alt="wrong" style="zoom: 50%;" />
+
+
+
