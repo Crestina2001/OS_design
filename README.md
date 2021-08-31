@@ -72,7 +72,7 @@
 
   - 修改`bochsrc`，将如下的三个路径更换为实际的路径
 
-    ![](assets\Inked3_LI.jpg)
+    ![img](assets/1.png)
 
 * 运行操作系统
 
